@@ -20,6 +20,6 @@
       "~/*": ["./src/*"]
     }
   },
-  "files": ["./.eslintrc.cjs"],
-  "include": ["src", "./*.d.ts", "./*.config.ts", "vite/client"]
+  "files": ["eslint.config.cjs", "tailwind.config.js", "vite.config.ts"],
+  "include": ["src"]
 }

@@ -1,3 +1,4 @@
+/// <reference types="postcss"/>
 /**
  * This is the base config for vite.
  * When building, the adapter config is used which loads this file and extends it.
@@ -7,6 +8,9 @@ import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import pkg from "./package.json";
+import tailwindcss from "tailwindcss";
+import autoprefixer from "autoprefixer";
+import postcssPreset from "postcss-preset-env";
 
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
@@ -22,6 +26,12 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 export default defineConfig(({ command, mode }): UserConfig => {
   return {
     plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
+    css: {
+      postcss: {
+        // note: there might be `postcss` version incompatible issues
+        plugins: [tailwindcss(), autoprefixer(), postcssPreset()] as never,
+      },
+    },
     // This tells Vite which dependencies to pre-build in dev mode.
     optimizeDeps: {
       // Put problematic deps that break bundling here, mostly those with binaries.
