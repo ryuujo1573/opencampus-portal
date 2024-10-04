@@ -34,7 +34,7 @@ export default component$(() => {
             console.log(data);
           }}
         >
-          <div class="card-title group-focus pb-2">UNO LOGIN</div>
+          <div class="card-title group-focus select-none pb-2">UNO LOGIN</div>
           <label
             class="input input-bordered data-[ok]:input-success flex items-center gap-2"
             data-ok={formData.checks.account}
