@@ -3,9 +3,27 @@ import { loadTranslations } from "@angular/localize";
 import { $, getLocale, useOnDocument, withLocale } from "@builder.io/qwik";
 import type { RenderOptions } from "@builder.io/qwik/server";
 
-// You must declare all your locales here
-import EN from "../../locales/message.en.json";
-import IT from "../../locales/message.it.json";
+export const loadAllTranslations = async () => {
+  return await Promise.all(
+    Object.values(
+      import.meta.glob<boolean, string, LocalJson>("../../locales/*"),
+    ).map(($import) => $import()),
+  );
+};
+
+interface LocalJson {
+  readonly locale: string;
+  // TODO: i18-extract integration
+  readonly localeName: string;
+  readonly translations: Parameters<typeof loadTranslations>[0];
+}
+
+const allLocaleData = await loadAllTranslations();
+
+export const allLocales = allLocaleData.map((data) => ({
+  locale: data.locale,
+  localeName: data.localeName,
+}));
 
 // Make sure it's obvious when the default locale was selected
 const DEFAULT_LOCALE = "en";
@@ -24,14 +42,14 @@ const $localizeFn = $localize as any as {
  * This solution uses the `@angular/localize` package for translations, however out of the box
  * `$localize` works with a single translation only. This code adds support for multiple locales
  * concurrently. It does this by intercepting the `TRANSLATIONS` property read and returning
- * appropriate translation based on the current locale which is store in the `usEnvDate('local')`.
+ * appropriate translation based on the current locale which is store in the `useEnvData('locale')`.
  */
 
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 if (!$localizeFn.TRANSLATION_BY_LOCALE) {
   $localizeFn.TRANSLATION_BY_LOCALE = new Map([["", {}]]);
   Object.defineProperty($localize, "TRANSLATIONS", {
-    get: function () {
+    get() {
       const locale = getLocale(DEFAULT_LOCALE);
       let translations = $localizeFn.TRANSLATION_BY_LOCALE.get(locale);
       if (!translations) {
@@ -46,8 +64,11 @@ if (!$localizeFn.TRANSLATION_BY_LOCALE) {
  * Function used to load all translations variants.
  */
 export function initTranslations() {
-  [EN, IT].forEach(({ translations, locale }) => {
-    withLocale(locale, () => loadTranslations(translations));
+  allLocaleData.forEach(({ translations, locale }) => {
+    withLocale(locale, () => {
+      console.log("[localize] loading %o", locale);
+      loadTranslations(translations);
+    });
   });
 }
 
@@ -58,10 +79,27 @@ export function initTranslations() {
  *
  * @returns The locale to use which will be stored in the `useEnvData('locale')`.
  */
-export function extractLang(locale: string): string {
+export function extractLang(locale: string) {
   return locale && $localizeFn.TRANSLATION_BY_LOCALE.has(locale)
     ? locale
-    : DEFAULT_LOCALE;
+    : undefined;
+}
+
+export function extractLangFromHeader(acceptLanguage?: string | null): string {
+  // TODO: simplify syntaxes
+  return (
+    acceptLanguage?.split(",").reduce((found, span) => {
+      if (found) return found;
+      const match = /([^;]+)(;.+)?/.exec(span);
+      if (match) {
+        const [, lang] = match;
+        if (extractLang(lang) != undefined) {
+          return lang;
+        }
+      }
+      return "";
+    }, "") ?? DEFAULT_LOCALE
+  );
 }
 
 /**

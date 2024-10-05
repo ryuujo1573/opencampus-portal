@@ -58,6 +58,7 @@
     "wrangler": "^3.0.0"
   },
   "dependencies": {
-    "@angular/localize": "^16.2.2"
+    "@angular/localize": "^16.2.2",
+    "@ory/client": "^1.15.5"
   }
 }

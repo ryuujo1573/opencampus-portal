@@ -1,10 +1,5 @@
 import { component$, useSignal, useStore } from "@builder.io/qwik";
-import {
-  BsCheck,
-  BsPassFill,
-  BsPersonFill,
-  BsShieldFill,
-} from "@qwikest/icons/bootstrap";
+import { BsCheck, BsPersonFill, BsShieldFill } from "@qwikest/icons/bootstrap";
 
 export default component$(() => {
   const accountChecking = useSignal(false);
@@ -18,7 +13,7 @@ export default component$(() => {
 
   return (
     <div class="absolute inset-0 flex items-center justify-center">
-      <div class="card card-bordered border-base-content bg-base-100 h-auto w-auto">
+      <div class="card card-bordered h-auto w-auto border-base-content bg-base-100">
         <form
           class="card-body *:font-mono"
           preventdefault:submit
@@ -34,9 +29,9 @@ export default component$(() => {
             console.log(data);
           }}
         >
-          <div class="card-title group-focus select-none pb-2">UNO LOGIN</div>
+          <div class="group-focus card-title select-none pb-2">UNO LOGIN</div>
           <label
-            class="input input-bordered data-[ok]:input-success flex items-center gap-2"
+            class="input input-bordered flex items-center gap-2 data-[ok]:input-success"
             data-ok={formData.checks.account}
           >
             <BsPersonFill />
@@ -62,7 +57,7 @@ export default component$(() => {
             />
             <span
               class={[
-                "loading-ring loading loading-sm",
+                "loading loading-ring loading-sm",
                 !accountChecking.value && "hidden",
               ]}
             ></span>
@@ -83,7 +78,7 @@ export default component$(() => {
           <label class="label flex justify-start gap-2">
             <input
               type="checkbox"
-              class="checkbox checkbox-sm checkbox-primary"
+              class="checkbox-primary checkbox checkbox-sm"
             />
             <span class="label-texta">Remember me</span>
           </label>
