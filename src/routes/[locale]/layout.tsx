@@ -17,9 +17,9 @@ export const onRequest: RequestHandler = (ctx) => {
     const acceptLocale = extractLangFromHeader(header);
 
     // ctx.locale(acceptLocale);
-    const newUrl = `/${acceptLocale}${ctx.pathname}`;
+    const newUrl = `/${acceptLocale}${ctx.pathname}?${ctx.query.toString()}`;
     console.log("should go to", newUrl);
-    throw ctx.redirect(301, newUrl);
+    throw ctx.redirect(302, newUrl);
   }
 };
 

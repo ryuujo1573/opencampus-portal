@@ -11,7 +11,6 @@ import pkg from "./package.json";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import postcssPreset from "postcss-preset-env";
-import localeLoader from "./plugins/localeLoader";
 
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
@@ -26,7 +25,7 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
  */
 export default defineConfig(({ command, mode }): UserConfig => {
   return {
-    plugins: [qwikCity(), qwikVite(), tsconfigPaths(), localeLoader()],
+    plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
     css: {
       postcss: {
         // note: there might be `postcss` version incompatible issues
@@ -58,6 +57,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
     //     : undefined,
 
     server: {
+      host: "127.0.0.1",
       port: 4455,
       headers: {
         // Don't cache the server response in dev mode

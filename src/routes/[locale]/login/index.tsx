@@ -29,7 +29,9 @@ export default component$(() => {
             console.log(data);
           }}
         >
-          <div class="group-focus card-title select-none pb-2">{$localize`UNO LOGIN`}</div>
+          <div class="group-focus card-title select-none pb-2">
+            {$localize`UNO LOGIN`}
+          </div>
           <label
             class="input input-bordered flex items-center gap-2 data-[ok]:input-success"
             data-ok={formData.checks.account}
@@ -49,7 +51,7 @@ export default component$(() => {
                 clearTimeout(el.debounceTimeout);
 
                 el.debounceTimeout = window.setTimeout(() => {
-                  console.log("mock check");
+                  console.log("input mock check");
                   accountChecking.value = false;
                   formData.checks.account = true;
                 }, 2000);
@@ -68,7 +70,7 @@ export default component$(() => {
           <label class="input input-bordered flex items-center gap-2">
             <BsShieldFill />
             <input
-              type="text"
+              type="password"
               required
               class="grow"
               name="password"

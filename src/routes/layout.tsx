@@ -2,6 +2,7 @@ import { component$, Slot } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { onRequest } from "./[locale]/layout";
+import type { Session } from "@ory/client";
 
 export const onGet: RequestHandler = async (ctx) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -21,6 +22,10 @@ export const useServerTimeLoader = routeLoader$(() => {
   return {
     date: new Date().toISOString(),
   };
+});
+
+export const useSession = routeLoader$(({ sharedMap }) => {
+  return sharedMap.get("session") as Session | undefined;
 });
 
 export default component$(() => {
