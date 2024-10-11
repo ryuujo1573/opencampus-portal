@@ -3,14 +3,6 @@ import { loadTranslations } from "@angular/localize";
 import { $, getLocale, useOnDocument, withLocale } from "@builder.io/qwik";
 import type { RenderOptions } from "@builder.io/qwik/server";
 
-export const loadAllTranslations = async () => {
-  return await Promise.all(
-    Object.values(
-      import.meta.glob<boolean, string, LocalJson>("../../locales/*"),
-    ).map(($import) => $import()),
-  );
-};
-
 interface LocalJson {
   readonly locale: string;
   // TODO: i18-extract integration
@@ -18,9 +10,22 @@ interface LocalJson {
   readonly translations: Parameters<typeof loadTranslations>[0];
 }
 
-const allLocaleData = await loadAllTranslations();
+export const loadAllTranslations = () => {
+  return Object.values(
+    import.meta.glob<true, string, { default: LocalJson }>("../../locales/*", {
+      eager: true,
+    }),
+  ).map((mod) => mod.default);
+};
 
-export const allLocales = allLocaleData.map((data) => ({
+interface LocaleDefinition {
+  readonly locale: string;
+  readonly localeName: string;
+}
+
+const locales = loadAllTranslations();
+
+export const allLocales: LocaleDefinition[] = locales.map((data) => ({
   locale: data.locale,
   localeName: data.localeName,
 }));
@@ -64,7 +69,9 @@ if (!$localizeFn.TRANSLATION_BY_LOCALE) {
  * Function used to load all translations variants.
  */
 export function initTranslations() {
-  allLocaleData.forEach(({ translations, locale }) => {
+  console.log(locales);
+
+  locales.forEach(({ translations, locale }) => {
     withLocale(locale, () => {
       console.log("[localize] loading %o", locale);
       loadTranslations(translations);
@@ -80,7 +87,7 @@ export function initTranslations() {
  * @returns The locale to use which will be stored in the `useEnvData('locale')`.
  */
 export function extractLang(locale: string) {
-  return locale && $localizeFn.TRANSLATION_BY_LOCALE.has(locale)
+  return locale && allLocales.some((local) => local.locale == locale)
     ? locale
     : undefined;
 }
@@ -98,7 +105,7 @@ export function extractLangFromHeader(acceptLanguage?: string | null): string {
         }
       }
       return "";
-    }, "") ?? DEFAULT_LOCALE
+    }, "") || DEFAULT_LOCALE
   );
 }
 

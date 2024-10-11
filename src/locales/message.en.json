@@ -2,6 +2,11 @@
   "locale": "en",
   "localeName": "English",
   "translations": {
+    "3438877441716594431": "UNO LOGIN",
+    "1898771190899540954": "Uno Account",
+    "1708227762283297411": "Credential",
+    "931252989873527145": "Remember me",
+    "8590504909306574761": "ENTER",
     "1573294495032945047": "Hello from {$PH}!",
     "6017541878515382629": "current locale is {$PH}",
     "8569626659814641312": "Use the following links to change the translation.",

@@ -2,6 +2,11 @@
   "locale": "it",
   "localeName": "Italiano",
   "translations": {
+    "3438877441716594431": "UNO LOGIN",
+    "1898771190899540954": "conto uno",
+    "1708227762283297411": "credenziali",
+    "931252989873527145": "Ricordati di me",
+    "8590504909306574761": "ENTRA",
     "1573294495032945047": "Un saluto da {$PH}!",
     "6017541878515382629": "la locale attuale è \"{$PH}\"",
     "8569626659814641312": "Usa i seguenti link per cambiare la traduzione.",

@@ -11,6 +11,7 @@ import pkg from "./package.json";
 import tailwindcss from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import postcssPreset from "postcss-preset-env";
+import localeLoader from "./plugins/localeLoader";
 
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
@@ -25,7 +26,7 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
  */
 export default defineConfig(({ command, mode }): UserConfig => {
   return {
-    plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
+    plugins: [qwikCity(), qwikVite(), tsconfigPaths(), localeLoader()],
     css: {
       postcss: {
         // note: there might be `postcss` version incompatible issues
@@ -38,7 +39,7 @@ export default defineConfig(({ command, mode }): UserConfig => {
       // For example ['better-sqlite3'] if you use that in server functions.
       exclude: [],
     },
-
+    clearScreen: false,
     /**
      * This is an advanced setting. It improves the bundling of your server code. To use it, make sure you understand when your consumed packages are dependencies or dev dependencies. (otherwise things will break in production)
      */
@@ -57,12 +58,14 @@ export default defineConfig(({ command, mode }): UserConfig => {
     //     : undefined,
 
     server: {
+      port: 4455,
       headers: {
         // Don't cache the server response in dev mode
         "Cache-Control": "public, max-age=0",
       },
     },
     preview: {
+      port: 4455,
       headers: {
         // Do cache the server response in preview (non-adapter production build)
         "Cache-Control": "public, max-age=600",

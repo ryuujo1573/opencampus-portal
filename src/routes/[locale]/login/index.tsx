@@ -29,7 +29,7 @@ export default component$(() => {
             console.log(data);
           }}
         >
-          <div class="group-focus card-title select-none pb-2">UNO LOGIN</div>
+          <div class="group-focus card-title select-none pb-2">{$localize`UNO LOGIN`}</div>
           <label
             class="input input-bordered flex items-center gap-2 data-[ok]:input-success"
             data-ok={formData.checks.account}
@@ -40,7 +40,7 @@ export default component$(() => {
               class="grow"
               required
               name="account"
-              placeholder="Uno Account"
+              placeholder={$localize`Uno Account`}
               onInput$={(
                 _,
                 el: HTMLInputElement & { debounceTimeout: number | undefined },
@@ -72,7 +72,7 @@ export default component$(() => {
               required
               class="grow"
               name="password"
-              placeholder="Credential"
+              placeholder={$localize`Credential`}
             />
           </label>
           <label class="label flex justify-start gap-2">
@@ -80,10 +80,10 @@ export default component$(() => {
               type="checkbox"
               class="checkbox-primary checkbox checkbox-sm"
             />
-            <span class="label-texta">Remember me</span>
+            <span class="label-texta">{$localize`Remember me`}</span>
           </label>
           <button type="submit" class="btn btn-outline btn-primary">
-            &gt; ENTER
+            &gt; {$localize`ENTER`}
           </button>
         </form>
       </div>
