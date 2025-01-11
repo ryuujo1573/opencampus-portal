@@ -13,12 +13,17 @@ export const onRequest: RequestHandler = (ctx) => {
   if (!locale) {
     const header = ctx.request.headers.get("Accept-Language");
     // /[locale]/ is possible opt-out path
-    console.log("[req header]", header);
     const acceptLocale = extractLangFromHeader(header);
 
     // ctx.locale(acceptLocale);
-    const newUrl = `/${acceptLocale}${ctx.pathname}?${ctx.query.toString()}`;
-    console.log("should go to", newUrl);
+    const newUrl = `/${acceptLocale}${ctx.url.href}`;
+    console.debug(
+      "[%s %o] there's no locale %o, forward to",
+      ctx.method,
+      ctx.url.href,
+      locale,
+      "/" + acceptLocale,
+    );
     throw ctx.redirect(302, newUrl);
   }
 };
