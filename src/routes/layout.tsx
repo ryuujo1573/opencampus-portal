@@ -1,8 +1,9 @@
 import { component$, Slot } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import type { RequestHandler } from "@builder.io/qwik-city";
-import { onRequest } from "./[locale]/layout";
+import { onRequest as locale_onRequest } from "./[locale]/layout";
 import type { Session } from "@ory/client";
+import { ErrorBoundary } from "~/components/error-boundary";
 
 export const onGet: RequestHandler = async (ctx) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -15,7 +16,7 @@ export const onGet: RequestHandler = async (ctx) => {
   });
 
   // simple hack to detect locale and redirect.
-  onRequest(ctx);
+  locale_onRequest(ctx);
 };
 
 export const useServerTimeLoader = routeLoader$(() => {
@@ -30,8 +31,8 @@ export const useSession = routeLoader$(({ sharedMap }) => {
 
 export default component$(() => {
   return (
-    <>
+    <ErrorBoundary>
       <Slot />
-    </>
+    </ErrorBoundary>
   );
 });

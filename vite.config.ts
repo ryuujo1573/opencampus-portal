@@ -25,7 +25,15 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
  */
 export default defineConfig(({ command, mode }): UserConfig => {
   return {
-    plugins: [qwikCity(), qwikVite(), tsconfigPaths()],
+    plugins: [
+      qwikCity({
+        trailingSlash: false,
+      }),
+      qwikVite({
+        debug: !!process.env.DEBUG,
+      }),
+      tsconfigPaths(),
+    ],
     css: {
       postcss: {
         // note: there might be `postcss` version incompatible issues

@@ -24,13 +24,6 @@ export const kratosAuth: RequestHandler = async (ctx) => {
 
       throw ctx.redirect(302, flow.request_url);
     }
-    ctx.html(
-      500,
-      `
-      <div class="prose">
-        <pre>${JSON.stringify(e, null, 4)}</pre>
-      </div>
-      `,
-    );
+    throw e;
   }
 };

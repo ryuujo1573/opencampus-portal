@@ -15,6 +15,7 @@ export const onRequest: RequestHandler = (ctx) => {
     // /[locale]/ is possible opt-out path
     const acceptLocale = extractLangFromHeader(header);
 
+    const query = ctx.query.toString();
     // ctx.locale(acceptLocale);
     const newUrl = `/${acceptLocale}${ctx.url.pathname}${ctx.url.search}`;
     console.debug(
@@ -30,5 +31,6 @@ export const onRequest: RequestHandler = (ctx) => {
 
 export default component$(() => {
   useI18n();
+
   return <Slot />;
 });
