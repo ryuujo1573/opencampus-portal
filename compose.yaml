@@ -1,0 +1,13 @@
+name: opencampus
+
+services:
+  uni-portal:
+    image: opencampus/portal:bun
+    build: .
+    ports:
+      - 4455:4455
+    volumes:
+      - ./:/app/portal/
+      - "/app/portal/node_modules"
+    working_dir: /app/portal
+    entrypoint: [ "bun", "dev", "--host", "0.0.0.0" ]

@@ -16,7 +16,7 @@ export const onRequest: RequestHandler = (ctx) => {
     const acceptLocale = extractLangFromHeader(header);
 
     // ctx.locale(acceptLocale);
-    const newUrl = `/${acceptLocale}${ctx.url.href}`;
+    const newUrl = `/${acceptLocale}${ctx.url.pathname}${ctx.url.search}`;
     console.debug(
       "[%s %o] there's no locale %o, forward to",
       ctx.method,
